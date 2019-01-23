@@ -37,7 +37,7 @@ end
 %%%Experimental mesurements[Wb]
 %%%Shot 45052 t=140[ms]
 Mirnv_flux=[-2.1877e-5,-1.8424e-5,-1.6136e-5,-1.7539e-5,-1.9190e-5,-2.0694e-5,-1.916e-5,-2.4294e-5,-2.3897e-5,-1.6563e-5,-2.4345e-5,-2.018e-5];
-Mirnv_B_exp=-Mirnv_flux/(50*49e-6); %%%% [T],sinal invertido
+Mirnv_B_exp=Mirnv_flux/(50*49e-6); %%%% [T]
 
 %%% 1st approximation just one filament in the center with 3 degrees of
 %%% freedom
@@ -49,23 +49,43 @@ fval=fminsearch(@(x) ErrorMirnFunc(Mirnv_B_exp,x(1),x(2),x(3),R_mirn,z_mirn),[0.
 for i=1:12
 %     Mirnv_B_predic(i)=Bmagnmirnv();
 x(i)=Bmagnmirnv(0,46,4000,R_mirn(i),z_mirn(i));
+
+xx(i)=Bmagnmirnv(fval(1),fval(2),fval(3),R_mirn(i),z_mirn(i));
+
 end
 
 
 %%%%%%%%%%Plotting
 
 figure(4)
-plot([1,2,3,4,5,6,7,8,9,10,11,12],Mirnv_B_exp,'-o')
+plot([1,2,3,4,5,6,7,8,9,10,11,12],1000*Mirnv_B_exp,'-o')
 hold on
-plot([1,2,3,4,5,6,7,8,9,10,11,12],x,'-*')
+plot([1,2,3,4,5,6,7,8,9,10,11,12],1000*x,'-*')
 grid on
 title('Shot #45052  t=140[ms]  Ip~4[kA]')
-xlabel('Coil #')
-ylabel('Measured B field [T]')
+legend('Experimental Data','Biot-savart ')
+xlabel('Mirnov #')
+ylabel('Measured B field [mT]')
+
+figure(5)
+plot([1,2,3,4,5,6,7,8,9,10,11,12],1000*Mirnv_B_exp,'-o')
+hold on
+plot([1,2,3,4,5,6,7,8,9,10,11,12],1000*xx,'-*')
+grid on
+title('Shot #45052  t=140[ms]  Ip~4[kA]')
+legend('Experimental Data','Biot-savart  (optimized )')
+xlabel('Mirnov #')
+ylabel('Optimization [mT]')
+
+% 
 % figure(3)
 % plot(xvess,yvess,'k','linewidth',2)
 % hold on
 % plot(46,0,'.m','MarkerSize',770)
+% plot(R_mirn,z_mirn,'sk','MarkerSize',17)
+% for i = 1:12
+%     text(R_mirn(i),z_mirn(i),num2str(i),'Color','r','FontSize',13)    
+% end
 % axis equal
 % ylim([-11,11])
 % xlabel('R[cm]')

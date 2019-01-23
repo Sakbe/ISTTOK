@@ -1,69 +1,71 @@
 function [ Bmirn ] = Bmagnmirnv( Z_filament,R_filament,I_filament,r_mirnv,z_mirnv)
 
-Zc=Z_filament;
-Ra=R_filament;
-I=I_filament;
-turns=1; %%%% porque é modelo de filamentos
-rpoint=r_mirnv;
-zpoint=z_mirnv;
-yp=zpoint;
-zp=rpoint;
-dist=0; %% X=0; plano YZ
-xp=dist;
-N=1000;   % No of grids in the coil ( X-Y plane)
-u0=4*pi*0.001;   % [microWb/(A cm)]
-phi=-pi/2:2*pi/(N-1):3*pi/2; % For describing a circle (coil)
+%-------------------------------------------------------------------------%
+%---Filament is in the R-Y plane and Magnetic Field is Evaluated -------------%
+%-------------at the Mirnv coordinate in the R-Z plane------------------------%
+%-------------------------------------------------------------------------%
 
-Xc=Ra*cos(phi); % X-coordinates of the coil
-Yc=Ra*sin(phi); % Y-coordinates of the coil
+Zc=Z_filament;
+I=I_filament;
+
+turns=1; %%%% porque é modelo de filamentos
+
+N=100;   % No of grids in the coil ( X-Y plane)
+u0=4*pi*0.001;   % [microWb/(A cm)]
+phi=0:2*pi/(N-1):2*pi; % For describing a circle (coil)
+
+Rc=R_filament*cos(phi); % R-coordinates of the filament
+Yc=R_filament*sin(phi); % Y-coordinates of the filament
 % Zc(1:25)=Zc;
 
+%Lets obtain the position vectors from dl to the mirnov 
+%%% mirnov is localized in the plane (y=0)
 for i=1:N-1
-Rx(i)=dist-0.5*(Xc(i)+Xc(i+1));
-Ry(i)=(yp-(0.5*(Yc(i)+Yc(i+1))));
-Rz(i)=(zp-(0.5*(Zc+Zc)));
-dlx(i)=Xc(i+1)-Xc(i);
-dly(i)=Yc(i+1)-Yc(i);
+   RR(i)=r_mirnv-0.5*(Rc(i)+Rc(i+1)); 
+   Rz(i)=z_mirnv-Zc;
+   Ry(i)=-0.5*(Yc(i)+Yc(i+1));     
+    dlR(i)=Rc(i+1)-Rc(i);
+    dly(i)=Yc(i+1)-Yc(i);
 end
-Rx(N)=dist-0.5*(Xc(N)+Xc(1));
-Ry(N)=(yp-(0.5*(Yc(N)+Yc(1))));
-Rz(N)=(zp-(0.5*(Zc+Zc)));
-dlx(N)=-Xc(N)+Xc(1);
-dly(N)=-Yc(N)+Yc(1);
+RR(N)=r_mirnv-0.5*(Rc(N)+Rc(1)); 
+   Rz(N)=z_mirnv-Zc;
+   Ry(N)=-0.5*(Rc(N)+Rc(1));     
+    dlR(N)=-Rc(N)+Rc(1);
+    dly(N)=-Yc(N)+Yc(1);
 
 %%dl x r
 for i=1:N
-Xcross(i)=dly(i).*Rz(i);
-Ycross(i)=-dlx(i).*Rz(i);
-Zcross(i)=(dlx(i).*Ry(i))-(dly(i).*Rx(i));
-R(i)=sqrt(Rx(i).^2+Ry(i).^2+Rz(i).^2);
+Rcross(i)=-dly(i).*Rz(i);
+Ycross(i)=dlR(i).*Rz(i);
+Zcross(i)=(dly(i).*RR(i))-(dlR(i).*Ry(i));
+R(i)=sqrt(RR(i).^2+Rz(i).^2+Ry(i).^2);
 end
 
 
 %dB=m0/4pi (Idl x r)/r^2 
-Bx1=(I*u0./(4*pi*(R.^3))).*Xcross;
-By1=(I*u0./(4*pi*(R.^3))).*Ycross;
+BR1=(I*u0./(4*pi*(R.^3))).*Rcross;
 Bz1=(I*u0./(4*pi*(R.^3))).*Zcross;
+By1=(I*u0./(4*pi*(R.^3))).*Ycross;
 
-BX=0;       % Initialize sum magnetic field to be zero first
-BY=0;
-BZ=0;
+BR=0;       % Initialize sum magnetic field to be zero first
+Bz=0;
+By=0;
 
 for i=1:N   % loop over all current elements along coil    
-    BX=BX+Bx1(i);
-    BY=BY+By1(i);
-    BZ=BZ+Bz1(i);
+    BR=BR+BR1(i);
+    Bz=Bz+Bz1(i);
+    By=By+By1(i);
 end
-z=yp;
-r=zp;
-y=xp;
-Br=turns*BZ;
-Bz=turns*BY;
-By=turns*BX;
 
-vector=[Z_filament-z_mirnv,R_filament-r_mirnv];
-unit_vec=[vector]./norm(vector);
-Bmirn=abs(Br*unit_vec(1)+Bz*unit_vec(2));
-Bmirn=sqrt(Br^2+Bz^2);
+BR=turns*BR;
+Bz=turns*Bz;
+By=turns*By; %%% units=[uWb / cm^2]
+
+vector=[Z_filament-z_mirnv,R_filament-r_mirnv];%Vector from center of chamber to mirnov center
+unit_vec=[vector]./norm(vector); %% Unit vector
+norm_vec=[-unit_vec(1),unit_vec(2)];%%%  Normal vector, coil direction
+ Bmirn=abs(BR*unit_vec(1)+Bz*unit_vec(2));
+ Bmirn=sqrt(BR^2+Bz^2+By^2);
+ Bmirn=dot([BR,Bz],norm_vec);
 Bmirn=0.01*Bmirn;%fator de 0.01 pra ter [T] 
 end
