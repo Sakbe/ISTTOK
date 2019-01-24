@@ -3,6 +3,9 @@
 %%%%%% Multifilaments,9 freedom degrees%%%%%%%%%%
 close all
 clear all
+%%% Load Shot
+load('shot_45052.mat');
+time=1e-3*data.time; %%%% time in ms
 
 %%% Draw the vessel
 th = 0:pi/50:2*pi;
@@ -37,7 +40,11 @@ end
 %%%Experimental mesurements[Wb]
 %%%Shot 45052 t=140[ms]
 Mirnv_flux=[-2.1877e-5,-1.8424e-5,-1.6136e-5,-1.7539e-5,-1.9190e-5,-2.0694e-5,-1.916e-5,-2.4294e-5,-2.3897e-5,-1.6563e-5,-2.4345e-5,-2.018e-5];
+time_index=find(time == 145);
+Mirnv_flux(:)=data.mirnv_corr(:,time_index);
+
 Mirnv_B_exp=Mirnv_flux/(50*49e-6); %%%% [T]
+
 
 %%% 1st approximation just one filament in the center with 3 degrees of
 %%% freedom
@@ -77,17 +84,17 @@ legend('Experimental Data','Biot-savart  (optimized )')
 xlabel('Mirnov #')
 ylabel('Optimization [mT]')
 
-% 
-% figure(3)
-% plot(xvess,yvess,'k','linewidth',2)
-% hold on
-% plot(46,0,'.m','MarkerSize',770)
-% plot(R_mirn,z_mirn,'sk','MarkerSize',17)
-% for i = 1:12
-%     text(R_mirn(i),z_mirn(i),num2str(i),'Color','r','FontSize',13)    
-% end
-% axis equal
-% ylim([-11,11])
-% xlabel('R[cm]')
-% ylabel('Z[cm]')
-% grid on
+
+figure(3)
+plot(xvess,yvess,'k','linewidth',2)
+hold on
+plot(46,0,'.m','MarkerSize',770)
+plot(R_mirn,z_mirn,'sk','MarkerSize',17)
+for i = 1:12
+    text(R_mirn(i),z_mirn(i),num2str(i),'Color','r','FontSize',13)    
+end
+axis equal
+ylim([-11,11])
+xlabel('R[cm]')
+ylabel('Z[cm]')
+grid on
