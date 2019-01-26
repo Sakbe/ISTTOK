@@ -1,6 +1,6 @@
 clear all
 % pkg load optim
-shotnr1=43666;
+shotnr1=45378;
 client = StartSdas()
 
 mirnv1='MARTE_NODE_IVO3.DataCollection.Channel_129'; 
@@ -41,6 +41,21 @@ mirnv9_corr='MARTE_NODE_IVO3.DataCollection.Channel_174';
 mirnv10_corr='MARTE_NODE_IVO3.DataCollection.Channel_175';
 mirnv11_corr='MARTE_NODE_IVO3.DataCollection.Channel_176';
 mirnv12_corr='MARTE_NODE_IVO3.DataCollection.Channel_177';
+
+ext_flux1='MARTE_NODE_IVO3.DataCollection.Channel_214'; 
+ext_flux2='MARTE_NODE_IVO3.DataCollection.Channel_215';
+ext_flux3='MARTE_NODE_IVO3.DataCollection.Channel_216';
+ext_flux4='MARTE_NODE_IVO3.DataCollection.Channel_217';
+ext_flux5='MARTE_NODE_IVO3.DataCollection.Channel_218'; 
+ext_flux6='MARTE_NODE_IVO3.DataCollection.Channel_219';
+ext_flux7='MARTE_NODE_IVO3.DataCollection.Channel_220';
+ext_flux8='MARTE_NODE_IVO3.DataCollection.Channel_221'; 
+ext_flux9='MARTE_NODE_IVO3.DataCollection.Channel_222';
+ext_flux10='MARTE_NODE_IVO3.DataCollection.Channel_223';
+ext_flux11='MARTE_NODE_IVO3.DataCollection.Channel_224';
+ext_flux12='MARTE_NODE_IVO3.DataCollection.Channel_225';
+
+V_loop='MARTE_NODE_IVO3.DataCollection.Channel_095';
 
 prim='MARTE_NODE_IVO3.DataCollection.Channel_093';
 hor='MARTE_NODE_IVO3.DataCollection.Channel_091';
@@ -90,10 +105,25 @@ chopper='MARTE_NODE_IVO3.DataCollection.Channel_141';
 [mirnv_corr(11,:),mirnv11_corr_t]=LoadSdasData(client, mirnv11_corr, shotnr1);
 [mirnv_corr(12,:),mirnv12_corr_t]=LoadSdasData(client, mirnv12_corr, shotnr1);
 
+[ext_flux(1,:),ext_flux1_t]=LoadSdasData(client, ext_flux1, shotnr1);
+[ext_flux(2,:),ext_flux2_t]=LoadSdasData(client, ext_flux2, shotnr1);
+[ext_flux(3,:),ext_flux3_t]=LoadSdasData(client, ext_flux3, shotnr1);
+[ext_flux(4,:),ext_flux4_t]=LoadSdasData(client, ext_flux4, shotnr1);
+[ext_flux(5,:),ext_flux5_t]=LoadSdasData(client, ext_flux5, shotnr1);
+[ext_flux(6,:),ext_flux6_t]=LoadSdasData(client, ext_flux6, shotnr1);
+[ext_flux(7,:),ext_flux7_t]=LoadSdasData(client, ext_flux7, shotnr1);
+[ext_flux(8,:),ext_flux8_t]=LoadSdasData(client, ext_flux8, shotnr1);
+[ext_flux(9,:),ext_flux9_t]=LoadSdasData(client, ext_flux9, shotnr1);
+[ext_flux(10,:),ext_flux10_t]=LoadSdasData(client, ext_flux10, shotnr1);
+[ext_flux(11,:),ext_flux11_t]=LoadSdasData(client, ext_flux11, shotnr1);
+[ext_flux(12,:),ext_flux12_t]=LoadSdasData(client, ext_flux12, shotnr1);
+
+
+[V_loop,V_loop_t]=LoadSdasData(client, V_loop, shotnr1);
 
 [prim,prim_t]=LoadSdasData(client, prim, shotnr1);
 [vert,vert_t]=LoadSdasData(client, vert, shotnr1);
-[hor,hort_]=LoadSdasData(client, hor, shotnr1);
+[hor,hort_t]=LoadSdasData(client, hor, shotnr1);
 
 [Ip_rog,t]=LoadSdasData(client, Ip_rog, shotnr1);
 [chopper,choppert]=LoadSdasData(client, chopper, shotnr1);
@@ -102,12 +132,18 @@ data.shot=shotnr1;
 data.chopper=chopper;
 data.time=t;
 data.Ip=Ip_rog;
+
 data.mirnv=mirnv;
 data.mirnv_corr=mirnv_corr;
 data.mirnv_raw=mirnv_raw;
+data.ext_flux=ext_flux;
+
+
 data.prim=prim;
 data.vert=vert;
 data.hor=hor;
-data.info='informatico, cabos novos ligados';
+data.Vloop=V_loop;
+
+data.info='Heviside no primario';
 file= strcat('shot_',num2str(shotnr1),'.mat');
 save(file, 'data');
