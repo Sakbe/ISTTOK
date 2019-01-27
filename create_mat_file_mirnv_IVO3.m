@@ -1,6 +1,6 @@
 clear all
 % pkg load optim
-shotnr1=45378;
+shotnr1=45410;
 client = StartSdas()
 
 mirnv1='MARTE_NODE_IVO3.DataCollection.Channel_129'; 
@@ -54,6 +54,19 @@ ext_flux9='MARTE_NODE_IVO3.DataCollection.Channel_222';
 ext_flux10='MARTE_NODE_IVO3.DataCollection.Channel_223';
 ext_flux11='MARTE_NODE_IVO3.DataCollection.Channel_224';
 ext_flux12='MARTE_NODE_IVO3.DataCollection.Channel_225';
+
+mirnv_corr_flux1='MARTE_NODE_IVO3.DataCollection.Channel_202'; 
+mirnv_corr_flux2='MARTE_NODE_IVO3.DataCollection.Channel_203';
+mirnv_corr_flux3='MARTE_NODE_IVO3.DataCollection.Channel_204';
+mirnv_corr_flux4='MARTE_NODE_IVO3.DataCollection.Channel_205';
+mirnv_corr_flux5='MARTE_NODE_IVO3.DataCollection.Channel_206'; 
+mirnv_corr_flux6='MARTE_NODE_IVO3.DataCollection.Channel_207';
+mirnv_corr_flux7='MARTE_NODE_IVO3.DataCollection.Channel_208';
+mirnv_corr_flux8='MARTE_NODE_IVO3.DataCollection.Channel_209'; 
+mirnv_corr_flux9='MARTE_NODE_IVO3.DataCollection.Channel_210';
+mirnv_corr_flux10='MARTE_NODE_IVO3.DataCollection.Channel_211';
+mirnv_corr_flux11='MARTE_NODE_IVO3.DataCollection.Channel_212';
+mirnv_corr_flux12='MARTE_NODE_IVO3.DataCollection.Channel_213';
 
 V_loop='MARTE_NODE_IVO3.DataCollection.Channel_095';
 
@@ -118,6 +131,19 @@ chopper='MARTE_NODE_IVO3.DataCollection.Channel_141';
 [ext_flux(11,:),ext_flux11_t]=LoadSdasData(client, ext_flux11, shotnr1);
 [ext_flux(12,:),ext_flux12_t]=LoadSdasData(client, ext_flux12, shotnr1);
 
+[mirnv_corr_flux(1,:),mirnv_corr_flux1_t]=LoadSdasData(client, mirnv_corr_flux1, shotnr1);
+[mirnv_corr_flux(2,:),mirnv_corr_flux2_t]=LoadSdasData(client, mirnv_corr_flux2, shotnr1);
+[mirnv_corr_flux(3,:),mirnv_corr_flux3_t]=LoadSdasData(client, mirnv_corr_flux3, shotnr1);
+[mirnv_corr_flux(4,:),mirnv_corr_flux4_t]=LoadSdasData(client, mirnv_corr_flux4, shotnr1);
+[mirnv_corr_flux(5,:),mirnv_corr_flux5_t]=LoadSdasData(client, mirnv_corr_flux5, shotnr1);
+[mirnv_corr_flux(6,:),mirnv_corr_flux6_t]=LoadSdasData(client, mirnv_corr_flux6, shotnr1);
+[mirnv_corr_flux(7,:),mirnv_corr_flux7_t]=LoadSdasData(client, mirnv_corr_flux7, shotnr1);
+[mirnv_corr_flux(8,:),mirnv_corr_flux8_t]=LoadSdasData(client, mirnv_corr_flux8, shotnr1);
+[mirnv_corr_flux(9,:),mirnv_corr_flux9_t]=LoadSdasData(client, mirnv_corr_flux9, shotnr1);
+[mirnv_corr_flux(10,:),mirnv_corr_flux10_t]=LoadSdasData(client, mirnv_corr_flux10, shotnr1);
+[mirnv_corr_flux(11,:),mirnv_corr_flux11_t]=LoadSdasData(client, mirnv_corr_flux11, shotnr1);
+[mirnv_corr_flux(12,:),mirnv_corr_flux12_t]=LoadSdasData(client, mirnv_corr_flux12, shotnr1);
+
 
 [V_loop,V_loop_t]=LoadSdasData(client, V_loop, shotnr1);
 
@@ -137,6 +163,7 @@ data.mirnv=mirnv;
 data.mirnv_corr=mirnv_corr;
 data.mirnv_raw=mirnv_raw;
 data.ext_flux=ext_flux;
+data.mirnv_corr_flux=mirnv_corr_flux;
 
 
 data.prim=prim;
@@ -144,6 +171,6 @@ data.vert=vert;
 data.hor=hor;
 data.Vloop=V_loop;
 
-data.info='Heviside no primario';
+data.info='Plasma';
 file= strcat('shot_',num2str(shotnr1),'.mat');
 save(file, 'data');
