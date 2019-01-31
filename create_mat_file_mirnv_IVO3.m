@@ -1,6 +1,6 @@
 clear all
 % pkg load optim
-shotnr1=45410;
+shotnr1=45477;
 client = StartSdas()
 
 mirnv1='MARTE_NODE_IVO3.DataCollection.Channel_129'; 
@@ -76,7 +76,8 @@ vert='MARTE_NODE_IVO3.DataCollection.Channel_092';
 
 Ip_rog='MARTE_NODE_IVO3.DataCollection.Channel_088';
 chopper='MARTE_NODE_IVO3.DataCollection.Channel_141';
-
+Ip_magn='MARTE_NODE_IVO3.DataCollection.Channel_085';
+Ip_magn_corr='MARTE_NODE_IVO3.DataCollection.Channel_228'
 
 [mirnv(1,:),mirnv1_t]=LoadSdasData(client, mirnv1, shotnr1);
 [mirnv(2,:),mirnv2_t]=LoadSdasData(client, mirnv2, shotnr1);
@@ -152,12 +153,18 @@ chopper='MARTE_NODE_IVO3.DataCollection.Channel_141';
 [hor,hort_t]=LoadSdasData(client, hor, shotnr1);
 
 [Ip_rog,t]=LoadSdasData(client, Ip_rog, shotnr1);
+[Ip_magn,t]=LoadSdasData(client, Ip_magn, shotnr1);
+[Ip_magn_corr,t]=LoadSdasData(client, Ip_magn_corr, shotnr1);
+
+
 [chopper,choppert]=LoadSdasData(client, chopper, shotnr1);
 
 data.shot=shotnr1;
 data.chopper=chopper;
 data.time=t;
 data.Ip=Ip_rog;
+data.Ip_magn=Ip_magn;
+data.Ip_magn_corr=Ip_magn_corr;
 
 data.mirnv=mirnv;
 data.mirnv_corr=mirnv_corr;
@@ -171,6 +178,6 @@ data.vert=vert;
 data.hor=hor;
 data.Vloop=V_loop;
 
-data.info='Plasma';
+data.info='plasma';
 file= strcat('shot_',num2str(shotnr1),'.mat');
 save(file, 'data');
