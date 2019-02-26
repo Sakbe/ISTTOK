@@ -1,6 +1,6 @@
 clear all
 % pkg load optim
-shotnr1=45477;
+shotnr1=45520;
 client = StartSdas()
 
 mirnv1='MARTE_NODE_IVO3.DataCollection.Channel_129'; 
@@ -178,6 +178,6 @@ data.vert=vert;
 data.hor=hor;
 data.Vloop=V_loop;
 
-data.info='plasma';
+data.info='heaviside primario';
 file= strcat('shot_',num2str(shotnr1),'.mat');
 save(file, 'data');
