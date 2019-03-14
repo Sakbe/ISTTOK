@@ -1,6 +1,6 @@
 clear all
 % pkg load optim
-shotnr1=45825;
+shotnr1=45970;
 client = StartSdas()
 
 mirnv1='MARTE_NODE_IVO3.DataCollection.Channel_129'; 
@@ -67,6 +67,24 @@ mirnv_corr_flux9='MARTE_NODE_IVO3.DataCollection.Channel_210';
 mirnv_corr_flux10='MARTE_NODE_IVO3.DataCollection.Channel_211';
 mirnv_corr_flux11='MARTE_NODE_IVO3.DataCollection.Channel_212';
 mirnv_corr_flux12='MARTE_NODE_IVO3.DataCollection.Channel_213';
+
+mirnv_SVD_recon1='MARTE_NODE_IVO3.DataCollection.Channel_231'; 
+mirnv_SVD_recon2='MARTE_NODE_IVO3.DataCollection.Channel_232';
+mirnv_SVD_recon3='MARTE_NODE_IVO3.DataCollection.Channel_233';
+mirnv_SVD_recon4='MARTE_NODE_IVO3.DataCollection.Channel_234';
+mirnv_SVD_recon5='MARTE_NODE_IVO3.DataCollection.Channel_235'; 
+mirnv_SVD_recon6='MARTE_NODE_IVO3.DataCollection.Channel_236';
+mirnv_SVD_recon7='MARTE_NODE_IVO3.DataCollection.Channel_237';
+mirnv_SVD_recon8='MARTE_NODE_IVO3.DataCollection.Channel_238'; 
+mirnv_SVD_recon9='MARTE_NODE_IVO3.DataCollection.Channel_239';
+mirnv_SVD_recon10='MARTE_NODE_IVO3.DataCollection.Channel_240';
+mirnv_SVD_recon11='MARTE_NODE_IVO3.DataCollection.Channel_241';
+mirnv_SVD_recon12='MARTE_NODE_IVO3.DataCollection.Channel_242';
+
+VerticalOutputWaveform='MARTE_NODE_IVO3.DataCollection.Channel_106';
+HorizontalOutputWaveform='MARTE_NODE_IVO3.DataCollection.Channel_107';
+
+sumIfil='MARTE_NODE_IVO3.DataCollection.Channel_230';
 
 V_loop='MARTE_NODE_IVO3.DataCollection.Channel_095';
 
@@ -150,8 +168,25 @@ z0_corr='MARTE_NODE_IVO3.DataCollection.Channel_227'
 [mirnv_corr_flux(11,:),mirnv_corr_flux11_t]=LoadSdasData(client, mirnv_corr_flux11, shotnr1);
 [mirnv_corr_flux(12,:),mirnv_corr_flux12_t]=LoadSdasData(client, mirnv_corr_flux12, shotnr1);
 
+[mirnv_SVD_recon(1,:),mirnv_SVD_recon1_t]=LoadSdasData(client, mirnv_SVD_recon1, shotnr1);
+[mirnv_SVD_recon(2,:),mirnv_SVD_recon2_t]=LoadSdasData(client, mirnv_SVD_recon2, shotnr1);
+[mirnv_SVD_recon(3,:),mirnv_SVD_recon3_t]=LoadSdasData(client, mirnv_SVD_recon3, shotnr1);
+[mirnv_SVD_recon(4,:),mirnv_SVD_recon4_t]=LoadSdasData(client, mirnv_SVD_recon4, shotnr1);
+[mirnv_SVD_recon(5,:),mirnv_SVD_recon5_t]=LoadSdasData(client, mirnv_SVD_recon5, shotnr1);
+[mirnv_SVD_recon(6,:),mirnv_SVD_recon6_t]=LoadSdasData(client, mirnv_SVD_recon6, shotnr1);
+[mirnv_SVD_recon(7,:),mirnv_SVD_recon7_t]=LoadSdasData(client, mirnv_SVD_recon7, shotnr1);
+[mirnv_SVD_recon(8,:),mirnv_SVD_recon8_t]=LoadSdasData(client, mirnv_SVD_recon8, shotnr1);
+[mirnv_SVD_recon(9,:),mirnv_SVD_recon9_t]=LoadSdasData(client, mirnv_SVD_recon9, shotnr1);
+[mirnv_SVD_recon(10,:),mirnv_SVD_recon10_t]=LoadSdasData(client, mirnv_SVD_recon10, shotnr1);
+[mirnv_SVD_recon(11,:),mirnv_SVD_recon11_t]=LoadSdasData(client, mirnv_SVD_recon11, shotnr1);
+[mirnv_SVD_recon(12,:),mirnv_SVD_recon12_t]=LoadSdasData(client, mirnv_SVD_recon12, shotnr1);
 
 [V_loop,V_loop_t]=LoadSdasData(client, V_loop, shotnr1);
+
+[VerticalOutputWaveform,VerticalOutputWaveform_t]=LoadSdasData(client,VerticalOutputWaveform, shotnr1);
+[HorizontalOutputWaveform,HorizontalOutputWaveform_t]=LoadSdasData(client, HorizontalOutputWaveform, shotnr1);
+
+[sumIfil,sumIfil_t]=LoadSdasData(client, sumIfil, shotnr1);
 
 [prim,prim_t]=LoadSdasData(client, prim, shotnr1);
 [vert,vert_t]=LoadSdasData(client, vert, shotnr1);
@@ -179,8 +214,11 @@ data.mirnv_corr=mirnv_corr;
 data.mirnv_raw=mirnv_raw;
 data.ext_flux=ext_flux;
 data.mirnv_corr_flux=mirnv_corr_flux;
+data.mirnv_SVD_recons=mirnv_SVD_recon;
 
-
+data.sumIfil=sumIfil;
+data.VerticalWaveform=VerticalOutputWaveform;
+data.HorizontalWaveform=HorizontalOutputWaveform;
 data.prim=prim;
 data.vert=vert;
 data.hor=hor;
